@@ -3,13 +3,10 @@ import { SeriesReviewsService } from './series-reviews.service';
 import { SeriesReviewsController } from './series-reviews.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SeriesReview } from './entities/series-review.entity';
-import { SeriesModule } from '@app/series/series.module';
+import { Series } from '@app/series/entities/series.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([SeriesReview]),
-    SeriesModule
-  ],
+  imports: [TypeOrmModule.forFeature([SeriesReview, Series])],
   controllers: [SeriesReviewsController],
   providers: [SeriesReviewsService],
 })

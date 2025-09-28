@@ -1,0 +1,14 @@
+// series.search.http
+### case: limit page sort
+GET http://localhost:3000/api/v1/series?limit=3&page=1&sortBy=title
+Content-Type: application/json
+
+
+### case: search
+GET http://localhost:3000/api/v1/series?limit=3&page=1&sortBy=title&search=Breaking
+Content-Type: application/json
+
+
+### case: get series by id
+GET http://localhost:3000/api/v1/series/1
+Content-Type: application/json

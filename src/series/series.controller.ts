@@ -1,15 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, HttpCode, Put } from '@nestjs/common';
 import { SeriesService, paginateConfig } from './series.service';
-import { CreateSeriesDto } from './dto/series.dto';
-import { UpdateSeriesDto } from './dto/series.dto';
+import { CreateSeriesDto, UpdateSeriesDto } from './dto/series.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LoggedInDto } from '@app/auth/dto/auth.dto';
-import { IdDto } from '@app/common/dto/common.dto';
+import { IdDto } from '../common/dto/id.dto';
 import { ApiPaginationQuery, Paginate, PaginateQuery } from 'nestjs-paginate';
+import { RatingDto } from './dto/rating.dto';
+import { RatingService } from './rating.service';
 
 @Controller('series')
 export class SeriesController {
-  constructor(private readonly seriesService: SeriesService) {}
+  constructor(
+    private readonly seriesService: SeriesService,
+    private readonly ratingService: RatingService
+  ) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -42,5 +46,15 @@ export class SeriesController {
   @Delete(':id')
   remove(@Param() idDto: IdDto, @Req() req: { user: LoggedInDto }) {
     return this.seriesService.remove(idDto.id, req.user);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put(":id/rating")
+  rating(
+    @Param() idDto: IdDto,
+    @Body() ratingDto: RatingDto,
+    @Req() req: { user: LoggedInDto }
+  ) {
+    return this.ratingService.rate(idDto.id, ratingDto, req.user);
   }
 }

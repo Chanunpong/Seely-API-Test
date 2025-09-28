@@ -1,32 +1,35 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Series } from '@app/series/entities/series.entity';
+import { SeriesReview } from '@app/series-reviews/entities/series-review.entity';
 
 export enum Role {
   SERIES_RECOMMENDER = 'SERIES_RECOMMENDER', // ผู้แนะนำซีรีย์
-  VIEWER = 'VIEWER' // ผู้ให้คะแนน
+  VIEWER = 'VIEWER', // ผู้ให้คะแนน
 }
 
-@Entity('users')
+@Entity({ name: 'users' })
 export class User {
-
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({
-    unique: true,
-    nullable: false,
-  })
+  @Column({ unique: true })
   username: string;
 
-  @Column({
-    nullable: false
-  })  
+  @Column()
   password: string;
 
   @Column({
-    nullable: false,
+    type: 'enum',
+    enum: Role,
     default: Role.VIEWER,
   })
   role: Role;
+
+  @OneToMany(() => Series, (series) => series.recommender)
+  recommendedSeries: Series[];
+
+  @OneToMany(() => SeriesReview, (review) => review.reviewer)
+  reviews: SeriesReview[];
 
   @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;

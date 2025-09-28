@@ -1,19 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { LoggedInDto } from '../dto/auth.dto';
 
 @Injectable()
-export class RefreshJwtStrategy extends PassportStrategy(Strategy, 'jwt-refresh') {
-
+export class RefreshJwtStrategy 
+  extends PassportStrategy(Strategy, 'refresh-jwt') {
+    
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_REFRESH_SECRET || 'seely-jwt-refresh-secret',
-    });
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req: Request) => req.cookies?.refreshToken || '',
+      ]),
+      secretOrKey: `${process.env.JWT_REFRESH_SECRET}`
+    })
   }
 
-  validate(payload: LoggedInDto): LoggedInDto {
-    return payload;
+  validate(user: LoggedInDto): LoggedInDto {
+    return { id: user.id, username: user.username, role: user.role }
   }
+
 }

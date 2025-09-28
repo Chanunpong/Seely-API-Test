@@ -1,13 +1,19 @@
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
-import cookieParser from 'cookie-parser';
+import * as cookieParser from 'cookie-parser';
 import { updateGlobalConfig } from 'nestjs-paginate';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppExceptionFilter } from './app-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // CORS Configuration
+  app.enableCors({
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:4200', 'http://localhost:3000'],
+    credentials: true,
+  });
 
   app.setGlobalPrefix('api')
 
@@ -16,7 +22,7 @@ async function bootstrap() {
     defaultVersion: '1'
   })
 
-  app.use(cookieParser())
+  app.use(cookieParser()) // ใช้ได้ปกติแล้ว
 
   // nestjs-paginate
   updateGlobalConfig({

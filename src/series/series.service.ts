@@ -1,11 +1,10 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
 import { Series } from './entities/series.entity';
-import { User, Role } from '@app/users/entities/user.entity';
 import { CreateSeriesDto, UpdateSeriesDto } from './dto/series.dto';
-import { LoggedInDto } from '@app/auth/dto/auth.dto';
+import { LoggedInDto } from '../auth/dto/auth.dto';
 
 export const paginateConfig: PaginateConfig<Series> = {
   sortableColumns: ['title', 'year', 'avgRating', 'ratingCount'],
@@ -16,9 +15,8 @@ export const paginateConfig: PaginateConfig<Series> = {
 export class SeriesService {
   constructor(
     @InjectRepository(Series)
-    private readonly repository: Repository<Series>,
-    @InjectRepository(User)  
-    private readonly userRepository: Repository<User>
+    private readonly repository: Repository<Series>
+    // ลบ UserRepository ออก - ใช้ UsersService แทน
   ) {}
 
   create(createSeriesDto: CreateSeriesDto, loggedInDto: LoggedInDto) {

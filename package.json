@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start:debug": "nest start --debug --watch", 
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
@@ -22,7 +22,12 @@
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-    "migration:create": "npx typeorm migration:create"
+    "migration:create": "npx typeorm migration:create",
+    "db:reset": "npm run typeorm -- schema:drop && npm run migration:run",
+    "db:seed": "npm run build && node dist/seeds/index.js",
+    "dev:setup": "docker-compose up -d && npm run migration:run && npm run db:seed",
+    "dev:down": "docker-compose down",
+    "setup": "npm install && npm run dev:setup"
   },
   "dependencies": {
     "@itgorillaz/configify": "^4.0.1",
@@ -93,7 +98,7 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    "moduleNameMapping": {
+    "moduleNameMapper": {
       "^@app/(.*)$": "<rootDir>/$1",
       "^@test/(.*)$": "<rootDir>/../test/$1"
     }

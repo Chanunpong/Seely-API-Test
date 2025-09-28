@@ -1,0 +1,47 @@
+// series.rating.http
+### viewer1 login
+# @name viewer1
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "username": "viewer1",
+    "password": "password123"
+}
+
+### case: viewer1 rating
+# @ref viewer1
+PUT  http://localhost:3000/api/v1/series/1/rating
+Authorization: Bearer {{viewer1.accessToken}}
+Content-Type: application/json
+
+{
+  "rating": 9.5,
+  "comment": "ซีรีย์ที่ดีมาก เนื้อเรื่องน่าติดตาม!"
+}
+
+
+### viewer2 login
+# @name viewer2
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "username": "viewer2",
+    "password": "password123"
+}
+
+### case: viewer2 rating
+# @ref viewer2
+PUT  http://localhost:3000/api/v1/series/1/rating
+Authorization: Bearer {{viewer2.accessToken}}
+Content-Type: application/json
+
+{
+  "rating": 8.5,
+  "comment": "เนื้อเรื่องดี แต่ช่วงแรกยาวไปนิด"
+}
+
+
+### case: view series 1
+GET  http://localhost:3000/api/v1/series/1
