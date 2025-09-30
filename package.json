@@ -23,11 +23,7 @@
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
     "migration:create": "npx typeorm migration:create",
-    "db:reset": "npm run typeorm -- schema:drop && npm run migration:run",
-    "db:seed": "npm run build && node dist/seeds/index.js",
-    "dev:setup": "docker-compose up -d && npm run migration:run && npm run db:seed",
-    "dev:down": "docker-compose down",
-    "setup": "npm install && npm run dev:setup"
+    "db:reset": "npm run typeorm -- schema:drop && npm run migration:run"
   },
   "dependencies": {
     "@itgorillaz/configify": "^4.0.1",

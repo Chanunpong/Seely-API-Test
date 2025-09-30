@@ -23,7 +23,7 @@ export class SeriesReview {
   @JoinColumn({ name: 'reviewer_id', referencedColumnName: 'id' })
   reviewer: User;
 
-  @Column({ name: 'rating', type: 'decimal', precision: 3, scale: 2 })
+  @Column({ name: 'rating', type: 'decimal', precision: 4, scale: 2 })
   rating: number; // คะแนนรีวิว (0.00-10.00)
 
   @Column({ name: 'comment', type: 'text', nullable: true })

@@ -1,4 +1,4 @@
-# Seely API - TV Series Recommendation Platform 📺
+# Seely API - TV Series Recommendation Platform 
 
 เว็บสำหรับแนะนำซีรีส์ให้คนใน community ดู และคนใน community สามารถให้คะแนน review ซีรีส์
 
@@ -8,23 +8,19 @@
 # 1. Install dependencies
 npm install
 
-# 2. Setup environment (your .env is already configured!)
-cp .env.example .env
+# 2. Setup PostgreSQL database
+# Create database: seely_db
+# Update .env with your database connection
 
-# 3. Start database
-docker-compose up -d
+# 3. Run migrations
+npm run build
+npm run migration:run
 
-# 4. Run migrations
-npm run build && npm run migration:run
-
-# 5. Seed sample data (optional)
-npm run db:seed
-
-# 6. Start development server
+# 4. Start development server
 npm run start:dev
 ```
 
-**🎉 Ready!** Visit http://localhost:3000/api for Swagger documentation
+Visit http://localhost:3000/api for Swagger documentation
 
 ## Features
 
@@ -74,7 +70,7 @@ npm run db:seed        # Add sample data
 npm run db:reset       # Reset database
 ```
 
-## 📡 API Endpoints
+##  API Endpoints
 
 ### Authentication
 - `POST /api/v1/auth/register` - สมัครสมาชิก
@@ -131,7 +127,7 @@ curl -X PUT http://localhost:3000/api/v1/series/1/rating \
   }'
 ```
 
-## 🏷 Series Rating Categories
+## Series Rating Categories
 
 - **ส** (ส่งเสริม) - ภาพยนตร์ที่ส่งเสริมการเรียนรู้และควรส่งเสริมให้มีการดู
 - **ท** (ทั่วไป) - ภาพยนตร์ที่เหมาะสมกับผู้ดูทั่วไป
@@ -171,4 +167,4 @@ curl -X PUT http://localhost:3000/api/v1/series/1/rating \
 
 ---
 
-**📺 Happy coding! สร้าง API สำหรับแนะนำซีรีย์ให้เสร็จสมบูรณ์แล้ว 🚀🚀🚀🚀🚀🚀🚀🚀**
+**ลุยเลยจร้าาาาาาาา To da moon 🚀🚀🚀🚀🚀🚀🚀🚀**

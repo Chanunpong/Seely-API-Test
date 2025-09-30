@@ -32,7 +32,7 @@ export class Series {
   @Column({ type: 'text' })
   description: string; // รายละเอียดรีวิว
 
-  @Column({ name: 'recommend_score', type: 'decimal', precision: 3, scale: 2 })
+  @Column({ name: 'recommend_score', type: 'decimal', precision: 4, scale: 2 })
   recommendScore: number; // คะแนนของผู้แนะนำ (0.00-10.00)
 
   @Column({
@@ -50,7 +50,7 @@ export class Series {
   reviews: SeriesReview[];
 
   // คะแนนรีวิวเฉลี่ย (จะคำนวณจาก reviews)
-  @Column({ name: 'avg_rating', type: 'decimal', precision: 3, scale: 2, default: 0 })
+  @Column({ name: 'avg_rating', type: 'decimal', precision: 4, scale: 2, default: 0 })
   avgRating: number;
 
   // จำนวนผู้รีวิว
