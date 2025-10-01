@@ -22,11 +22,11 @@ async function bootstrap() {
     defaultVersion: '1'
   })
 
-  app.use(cookieParser()) // ใช้ได้ปกติแล้ว
+  app.use(cookieParser()) 
 
   // nestjs-paginate
   updateGlobalConfig({
-    defaultLimit: 10,  // ตามโจทย์ 10 records
+    defaultLimit: 10,  // 10 record
   });
 
   // Swagger init config

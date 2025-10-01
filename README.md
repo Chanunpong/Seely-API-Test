@@ -66,7 +66,6 @@ src/
 npm run start:dev      # Development server
 npm run test           # Unit tests
 npm run test:e2e       # Integration tests
-npm run db:seed        # Add sample data
 npm run db:reset       # Reset database
 ```
 

@@ -1,9 +1,10 @@
 import { LoggedInDto } from '@app/auth/dto/auth.dto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource } from 'typeorm';
 import { RatingDto } from './dto/rating.dto';
 import { Series } from './entities/series.entity';
 import { SeriesReview } from '@app/series-reviews/entities/series-review.entity';
+import { Role } from '@app/users/entities/user.entity';
 
 @Injectable()
 export class RatingService {
@@ -14,6 +15,14 @@ export class RatingService {
     ratingDto: RatingDto,
     loggedInDto: LoggedInDto,
   ) {
+    // ตรวจสอบว่าเป็น VIEWER เท่านั้น แบะตัว SERIES_RECOMMENDER ห้ามให้คะแนนตัวเอง
+
+    if (loggedInDto.role !== Role.VIEWER) {
+      throw new ForbiddenException(
+        'Only VIEWER give ratings'
+      );
+    }
+
     // create transaction
     return this.datasource.transaction(async (entityManager) => {
       const reviewRepository = entityManager.getRepository(SeriesReview);

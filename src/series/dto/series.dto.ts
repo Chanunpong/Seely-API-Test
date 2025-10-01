@@ -7,7 +7,6 @@ const createSeriesDtoSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   year: z.number().int().min(1900).max(new Date().getFullYear() + 5, 'Invalid year'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
-  recommendScore: z.number().min(0).max(10, 'Recommend score must be between 0-10'),
   rating: z.nativeEnum(SeriesRating).default(SeriesRating.GENERAL),
 });
 

@@ -15,7 +15,6 @@ export class CreateSeries1735689000002 implements MigrationInterface {
                 "title" character varying NOT NULL,
                 "year" integer NOT NULL,
                 "description" text NOT NULL,
-                "recommend_score" numeric(4,2) NOT NULL,
                 "rating" "public"."series_rating_enum" NOT NULL DEFAULT 'ท',
                 "avg_rating" numeric(4,2) NOT NULL DEFAULT '0',
                 "rating_count" integer NOT NULL DEFAULT '0',

@@ -32,8 +32,6 @@ export class Series {
   @Column({ type: 'text' })
   description: string; // รายละเอียดรีวิว
 
-  @Column({ name: 'recommend_score', type: 'decimal', precision: 4, scale: 2 })
-  recommendScore: number; // คะแนนของผู้แนะนำ (0.00-10.00)
 
   @Column({
     type: 'enum',
