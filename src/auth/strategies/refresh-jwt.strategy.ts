@@ -11,7 +11,9 @@ export class RefreshJwtStrategy
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req: Request) => req.cookies?.refreshToken || '',
+        (request: Request) => {
+          return request?.cookies?.refreshToken; // ดึง token ให้อ่านจาก cookie 
+        },
       ]),
       secretOrKey: `${process.env.JWT_REFRESH_SECRET}`
     })

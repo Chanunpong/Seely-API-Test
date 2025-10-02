@@ -16,7 +16,7 @@ export class AuthService {
     const existingUser = await this.usersService.findByUsername(registerDto.username);
 
     if (existingUser) {
-      throw new ConflictException('Username already exists');
+      throw new ConflictException('Username already use');
     }
 
     // Hash password

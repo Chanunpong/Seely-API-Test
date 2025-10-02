@@ -66,12 +66,12 @@ export class SeriesService {
     };
   }
 
-  findOne(id: number) {
-    return this.queryTemplate()
-      .where('series.id = :id', { id })
-      .getOne();
-  }
-
+async findOne(id: number) {
+  const series = await this.queryTemplate()
+    .where('series.id = :id', { id })
+    .getOne();
+  return series || null;
+}
   // ✅ แก้ไขซีรีส์ - เฉพาะเจ้าของเท่านั่น (SERIES_RECOMMENDER ที่สร้าง)
   async update(id: number, updateSeriesDto: UpdateSeriesDto, loggedInDto: LoggedInDto) {
     // ตรวจสอบว่าเป็น owner และเป็น SERIES_RECOMMENDER
@@ -79,6 +79,7 @@ export class SeriesService {
       where: { id },
       relations: ['recommender']
     });
+    
 
     if (!series) {
       throw new NotFoundException(`Series with id ${id} not found`);
@@ -96,6 +97,7 @@ export class SeriesService {
       id, 
       ...updateSeriesDto 
     });
+    
   }
 
   // ✅ ลบซีรีส์ - เฉพาะ owner (SERIES_RECOMMENDER ที่สร้าง)
@@ -118,6 +120,7 @@ export class SeriesService {
       throw new ForbiddenException('Only SERIES_RECOMMENDER can delete series');
     }
 
-    return this.repository.delete({ id });
+    await this.repository.delete({ id });
   }
+  
 }
