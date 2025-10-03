@@ -110,7 +110,6 @@ curl -X POST http://localhost:3000/api/v1/series \
     "title": "Breaking Bad",
     "year": 2008,
     "description": "ซีรีย์เรื่องนี้เล่าถึงครูเคมีที่กลายเป็นผู้ผลิตยาเสพติด",
-    "recommendScore": 9.5,
     "rating": "น 18+"
   }'
 ```

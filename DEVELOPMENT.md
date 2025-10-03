@@ -191,7 +191,7 @@ src/
 Make sure your `.env` file has all required variables:
 - `DATABASE_URL`
 - `JWT_SECRET`
-- `JWT_REFRESH_SECRET`
+- `REFRESH_JWT_SECRET`
 - `PORT`
 - `NODE_ENV`
 

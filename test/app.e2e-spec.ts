@@ -1,12 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, VersioningType } from '@nestjs/common';
-import { AppModule } from '../src/app.module';
-import { DataSource } from 'typeorm';
+import { config } from 'dotenv';
+config();
+import { Test, TestingModule } from '@nestjs/testing'
+import { INestApplication, VersioningType } from '@nestjs/common'
+import { AppModule } from '../src/app.module'
+import { DataSource } from 'typeorm'
 
-const request = require('supertest');
+
+
+const request = require('supertest')
 
 describe('Seely API (e2e)', () => {
-  let app: INestApplication;
+  let app: INestApplication
 
   // สร้าง app ใหม่และลบข้อมูลก่อน test แต่ละตัว
   beforeEach(async () => {
@@ -49,17 +53,17 @@ describe('Seely API (e2e)', () => {
           })
           .expect(201);
 
-        expect(response.body).toHaveProperty('accessToken');
-        expect(response.body).toHaveProperty('user');
-        expect(response.body.user.username).toBe('recommender1');
-        expect(response.body.user.role).toBe('SERIES_RECOMMENDER');
+        expect(response.body).toHaveProperty('accessToken')
+        expect(response.body).toHaveProperty('user')
+        expect(response.body.user.username).toBe('recommender1')
+        expect(response.body.user.role).toBe('SERIES_RECOMMENDER')
         
-        const cookies = response.headers['set-cookie'];
-        expect(cookies).toBeDefined();
-        const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
-        const refreshCookie = cookieArray.find((c: string) => c.startsWith('refreshToken='));
-        expect(refreshCookie).toBeDefined();
-      });
+        const cookies = response.headers['set-cookie']
+        expect(cookies).toBeDefined()
+        const cookieArray = Array.isArray(cookies) ? cookies : [cookies]
+        const refreshCookie = cookieArray.find((c: string) => c.startsWith('refreshToken='))
+        expect(refreshCookie).toBeDefined()
+      })
 
       it('should register VIEWER successfully', async () => {
         const response = await request(app.getHttpServer())
@@ -127,12 +131,12 @@ describe('Seely API (e2e)', () => {
           })
           .expect(201);
 
-        expect(response.body).toHaveProperty('accessToken');
-        expect(response.body).toHaveProperty('user');
+        expect(response.body).toHaveProperty('accessToken')
+        expect(response.body).toHaveProperty('user')
         
-        const cookies = response.headers['set-cookie'];
-        const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
-        const refreshCookie = cookieArray.find((c: string) => c.startsWith('refreshToken='));
+        const cookies = response.headers['set-cookie']
+        const cookieArray = Array.isArray(cookies) ? cookies : [cookies]
+        const refreshCookie = cookieArray.find((c: string) => c.startsWith('refreshToken='))
         expect(refreshCookie).toBeDefined();
       });
 
@@ -179,6 +183,7 @@ describe('Seely API (e2e)', () => {
         const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
         const refreshCookie = cookieArray.find((c: string) => c.startsWith('refreshToken='));
         const refreshToken = refreshCookie.split(';')[0].split('=')[1];
+        console.log('Refresh Token:', refreshToken)
 
         const response = await request(app.getHttpServer())
           .post('/api/v1/auth/refresh')
@@ -187,6 +192,7 @@ describe('Seely API (e2e)', () => {
 
         expect(response.body).toHaveProperty('accessToken');
         expect(response.body).toHaveProperty('user');
+
       });
 
       it('should fail refresh without refresh token', async () => {
@@ -369,9 +375,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test ดีมากกกกก กกกกกก',
             rating: 'น 18+'
-          });
+          })
+          .expect(201);
 
         const response = await request(app.getHttpServer())
           .get('/api/v1/series?search=Breaking')
@@ -398,10 +405,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series for reading',
             rating: 'น 18+'
           })
-           .expect(201);
+          .expect(201);
           
 
         const response = await request(app.getHttpServer())
@@ -416,9 +423,10 @@ describe('Seely API (e2e)', () => {
       it('should return null for non-existent series', async () => {
         const response = await request(app.getHttpServer())
           .get('/api/v1/series/99999')
-          .expect(200);
+          .expect(404);
 
-        expect(response.body).toBeNull();
+          expect(response.body).toHaveProperty('message');
+          expect(response.body).toHaveProperty('statusCode', 404);
       });
 
       it('should return 400 for invalid id', async () => {
@@ -477,7 +485,7 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series for update',
             rating: 'น 18+'
           })
           .expect(201);
@@ -513,7 +521,7 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series owner',
             rating: 'น 18+'
           })
           .expect(201);
@@ -544,7 +552,7 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series for delete',
             rating: 'น 18+'
           })
           .expect(201);
@@ -570,7 +578,7 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series delete auth',
             rating: 'น 18+'
           })
           .expect(201);
@@ -610,9 +618,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series for rating',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         const response = await request(app.getHttpServer())
           .put(`/api/v1/series/${seriesRes.body.id}/rating`)
@@ -651,9 +660,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series update rating',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         // First rating
         await request(app.getHttpServer())
@@ -693,9 +703,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series recommender',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         await request(app.getHttpServer())
           .put(`/api/v1/series/${seriesRes.body.id}/rating`)
@@ -740,9 +751,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series invalid rating',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         await request(app.getHttpServer())
           .put(`/api/v1/series/${seriesRes.body.id}/rating`)
@@ -779,9 +791,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series all reviews',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         await request(app.getHttpServer())
           .put(`/api/v1/series/${seriesRes.body.id}/rating`)
@@ -816,9 +829,10 @@ describe('Seely API (e2e)', () => {
           .send({
             title: 'Breaking Bad',
             year: 2008,
-            description: 'Test',
+            description: 'Test series no reviews',
             rating: 'น 18+'
-          });
+          })
+          .expect(201); 
 
         const response = await request(app.getHttpServer())
           .get(`/api/v1/series/${seriesRes.body.id}/reviews`)
@@ -860,7 +874,8 @@ describe('Seely API (e2e)', () => {
           year: 2024,
           description: 'For testing',
           rating: 'ท'
-        });
+        })
+        .expect(201); 
 
       const ratings = [10.0, 9.0, 8.0, 7.0];
       

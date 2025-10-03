@@ -7,8 +7,8 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly jwtService: JwtService,
+    private usersService: UsersService,
+    private jwtService: JwtService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<JwtResponseDto> {
@@ -84,13 +84,15 @@ export class AuthService {
   private generateTokens(payload: LoggedInDto): JwtResponseDto {
     const accessToken = this.jwtService.sign(payload, {
       secret: process.env.JWT_SECRET,
-      expiresIn: process.env.JWT_EXPIRES_IN || '15m',
+      expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
     const refreshToken = this.jwtService.sign(payload, {
-      secret: process.env.JWT_REFRESH_SECRET,
-      expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+      secret: process.env.REFRESH_JWT_SECRET,
+      expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
     });
+
+    console.log('Secret key used to sign token:', process.env.REFRESH_JWT_SECRET)
 
     return {
       accessToken,

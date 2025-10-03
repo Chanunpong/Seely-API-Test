@@ -1,18 +1,23 @@
-import { DataSource } from 'typeorm';
+import { config } from 'dotenv';
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-export const dataSourceOptions = {
-  type: 'postgres' as const,
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '123456',
-  database: 'seely_db',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: ['dist/migrations/*{.ts,.js}'],
-  synchronize: true, // ให้ TypeORM สร้าง table อัตโนมัติ
+config();
+
+export const dataSourceOptions: DataSourceOptions = {
+  type: 'postgres',
   logging: true,
+  // ใช้ DATABASE_URL ถ้ามี, ไม่งั้นใช้ค่า individual
+  ...(process.env.DATABASE_URL
+    ? { url: process.env.DATABASE_URL }
+    : {
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_DATABASE,
+      }),
+  entities: ['dist/**/*.entity.js'],
+  migrations: ['dist/migrations/*.js'],
 };
 
-const dataSource = new DataSource(dataSourceOptions);
-
-export default dataSource;
+export const dataSource = new DataSource(dataSourceOptions);

@@ -15,8 +15,9 @@ export class RefreshJwtStrategy
           return request?.cookies?.refreshToken; // ดึง token ให้อ่านจาก cookie 
         },
       ]),
-      secretOrKey: `${process.env.JWT_REFRESH_SECRET}`
+      secretOrKey: `${process.env.REFRESH_JWT_SECRET}`
     })
+        console.log('REFRESH_JWT_SECRET used in strategy:', process.env.REFRESH_JWT_SECRET)
   }
 
   validate(user: LoggedInDto): LoggedInDto {

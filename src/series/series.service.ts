@@ -70,9 +70,15 @@ async findOne(id: number) {
   const series = await this.queryTemplate()
     .where('series.id = :id', { id })
     .getOne();
-  return series || null;
-}
-  // ✅ แก้ไขซีรีส์ - เฉพาะเจ้าของเท่านั่น (SERIES_RECOMMENDER ที่สร้าง)
+  
+  if (!series) {
+    throw new NotFoundException(`Series with ID ${id} not found.`);
+  }
+
+  return series;
+
+ }
+   //แก้ไขซีรีส์ - เฉพาะเจ้าของเท่านั่น (SERIES_RECOMMENDER ที่สร้าง)
   async update(id: number, updateSeriesDto: UpdateSeriesDto, loggedInDto: LoggedInDto) {
     // ตรวจสอบว่าเป็น owner และเป็น SERIES_RECOMMENDER
     const series = await this.repository.findOne({
@@ -100,7 +106,7 @@ async findOne(id: number) {
     
   }
 
-  // ✅ ลบซีรีส์ - เฉพาะ owner (SERIES_RECOMMENDER ที่สร้าง)
+   // ลบซีรีส์ - เฉพาะ owner (SERIES_RECOMMENDER ที่สร้าง)
   async remove(id: number, loggedInDto: LoggedInDto) {
     // ตรวจสอบว่าเป็น owner และเป็น SERIES_RECOMMENDER
     const series = await this.repository.findOne({
