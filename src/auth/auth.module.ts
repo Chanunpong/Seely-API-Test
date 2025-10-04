@@ -13,7 +13,7 @@ import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
         const jwtOpts: JwtModuleOptions = {
           secret: process.env.JWT_SECRET,
           signOptions: {
-            expiresIn: process.env.JWT_EXPIRES_IN || '15m'
+            expiresIn: process.env.JWT_EXPIRES_IN
           }
         }
         return jwtOpts;

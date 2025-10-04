@@ -1,22 +1,20 @@
-# Seely API - TV Series Recommendation Platform 
+# Seely API
 
-เว็บสำหรับแนะนำซีรีส์ให้คนใน community ดู และคนใน community สามารถให้คะแนน review ซีรีส์
+เว็บสำหรับแนะนำซีรีส์และให้คะแนนรีวิว
 
-##  Quick Start
-
+## Quick Start
 ```bash
-# 1. Install dependencies
+# Install dependencies
 npm install
 
-# 2. Setup PostgreSQL database
-# Create database: seely_db
-# Update .env with your database connection
+# Setup database (.env)
+DATABASE_URL=postgresql://postgres:123456@localhost:5432/seely_db
 
-# 3. Run migrations
+# Run migrations
 npm run build
 npm run migration:run
 
-# 4. Start development server
+# Start server
 npm run start:dev
 ```
 
@@ -32,39 +30,24 @@ Visit http://localhost:3000/api for Swagger documentation
 -  **Owner Permission** - เฉพาะเจ้าของแก้ไข/ลบได้
 -  **Public Read Access** - ทุกคนดูได้โดยไม่ต้อง login
 
-##  Sample Data (After Seeding)
-
-### Test Accounts
-| Username     | Password    | Role                |
-|-------------|-------------|---------------------|
-| recommender1| password123 | SERIES_RECOMMENDER  |
-| viewer1     | password123 | VIEWER              |
-| viewer2     | password123 | VIEWER              |
-
-### Sample Series
-- Breaking Bad (น 18+) - Rating: 9.5/10
-- Stranger Things (น 13+) - Rating: 8.7/10  
-- The Office (ท) - Rating: 8.9/10
-- Planet Earth (ส) - Rating: 9.4/10
 
 ## 🛠 Development
 
 ### Project Structure
 ```
 src/
-├── auth/              # JWT Authentication
-├── users/             # User management  
-├── series/            # TV series CRUD
-├── series-reviews/    # Review system
+├── auth/              # Authentication & JWT
+├── users/             # User management
+├── series/            # Series CRUD
+├── series-reviews/    # Review & rating system
 ├── common/            # Shared utilities
-├── migrations/        # Database schema
-└── seeds/             # Sample data
+├── migrations/        # Database migrations
+└── seeds/             # Seed data
 ```
 
 ### Scripts
 ```bash
 npm run start:dev      # Development server
-npm run test           # Unit tests
 npm run test:e2e       # Integration tests
 npm run db:reset       # Reset database
 ```
@@ -78,51 +61,23 @@ npm run db:reset       # Reset database
 - `POST /api/v1/auth/logout` - ออกจากระบบ
 
 ### Series (ซีรีย์)
-- `GET /api/v1/series` - ดูรายการซีรีย์ (pagination + search)
+- `GET /api/v1/series` - ดูรายการซีรีย์ (pagination)
 - `GET /api/v1/series/:id` - ดูซีรีย์แบบ detail
-- `POST /api/v1/series` - สร้างซีรีย์ใหม่ (🔐 SERIES_RECOMMENDER)
-- `PATCH /api/v1/series/:id` - แก้ไขซีรีย์ (🔐 owner only)
-- `DELETE /api/v1/series/:id` - ลบซีรีย์ (🔐 owner only)
+- `POST /api/v1/series` - สร้างซีรีย์ใหม่ (SERIES_RECOMMENDER)
+- `PATCH /api/v1/series/:id` - อัพเดทซีรีย์ (owner only)
+- `DELETE /api/v1/series/:id` - ลบซีรีย์ (owner only)
 
 ### Reviews (รีวิว)
 - `GET /api/v1/series/:id/reviews` - ดูรีวิวทั้งหมดของซีรีย์
-- `PUT /api/v1/series/:id/rating` - ให้คะแนนและรีวิวซีรีย์ (🔐 VIEWER)
+- `PUT /api/v1/series/:id/rating` - ให้คะแนนและรีวิวซีรีย์ (VIEWER)
 
-##  Testing Examples
+##  Testing
 
-### 1. Register & Login
-```bash
-curl -X POST http://localhost:3000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "testuser",
-    "password": "password123", 
-    "role": "SERIES_RECOMMENDER"
-  }'
-```
+# E2E tests
+npm run test:e2e
 
-### 2. Create Series
-```bash
-curl -X POST http://localhost:3000/api/v1/series \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "title": "Breaking Bad",
-    "year": 2008,
-    "description": "ซีรีย์เรื่องนี้เล่าถึงครูเคมีที่กลายเป็นผู้ผลิตยาเสพติด",
-    "rating": "น 18+"
-  }'
-```
-
-### 3. Rate Series
-```bash
-curl -X PUT http://localhost:3000/api/v1/series/1/rating \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -d '{
-    "rating": 9.0,
-    "comment": "ซีรีย์ที่ดีมาก เนื้อเรื่องน่าติดตาม"
-  }'
+# Reset database
+npm run db:reset
 ```
 
 ## Series Rating Categories
@@ -134,20 +89,13 @@ curl -X PUT http://localhost:3000/api/v1/series/1/rating \
 - **น 18+** - ภาพยนตร์ที่เหมาะสำหรับผู้มีอายุตั้งแต่ 18 ปีขึ้นไป
 - **ฉ 20+** - ภาพยนตร์เรื่องนี้ ห้ามผู้มีอายุต่ำกว่า 20 ปีดู (ตรวจบัตรประชาชน)
 
-## Tools & Testing
-
-- **API Documentation**: http://localhost:3000/api (Swagger)
-- **Database GUI**: http://localhost:8080 (PgAdmin)
-- **Postman Collection**: Import `Seely-API.postman_collection.json`
-- **Development Guide**: See `DEVELOPMENT.md`
-
 ##  Business Rules Met
 
  **ผู้แนะนำซีรีย์** - สามารถ login และ CRUD ซีรีย์ได้  
- **ผู้ให้คะแนน** - สามารถ login และรีวิวซีรีย์ได้  
+ **ผู้รีวิว** - สามารถ login และรีวิวซีรีย์ได้  
  **คนทั่วไป** - ดูรายการซีรีย์ พร้อมคะแนนเฉลี่ยและจำนวนรีวิว  
  **Auto-update** - คะแนนเฉลี่ยอัพเดทอัตโนมัติเมื่อมีรีวิวเพิ่ม  
- **Pagination** - Default 10 records ตามโจทย์  
+ **Pagination** - 10 records  
  **Owner Permissions** - เฉพาะเจ้าของแก้ไข/ลบได้  
  **JWT Authentication** - Access + Refresh token  
  **Input Validation** - nestjs-zod ทุก endpoint  
@@ -158,11 +106,19 @@ curl -X PUT http://localhost:3000/api/v1/series/1/rating \
 - **Framework**: NestJS
 - **Database**: PostgreSQL + TypeORM
 - **Authentication**: JWT + Passport
-- **Validation**: nestjs-zod + Zod
+- **Validation**: nestjs-zod
 - **Documentation**: Swagger/OpenAPI
 - **Testing**: Jest + Supertest
 - **Password**: bcrypt encryption
 
----
+##  Environment Variables
+
+DATABASE_URL=postgresql://user:password@localhost:5432/seely_db
+JWT_SECRET=your-secret-key
+JWT_EXPIRES_IN=1h
+REFRESH_JWT_SECRET=your-refresh-secret
+REFRESH_JWT_EXPIRES_IN=1h
+NODE_ENV=local
+
 
 **ลุยเลยจร้าาาาาาาา To da moon 🚀🚀🚀🚀🚀🚀🚀🚀**

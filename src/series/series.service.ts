@@ -10,7 +10,7 @@ import { Role } from '@app/users/entities/user.entity';
 
 export const paginateConfig: PaginateConfig<Series> = {
   sortableColumns: ['title', 'year', 'avgRating', 'ratingCount'],
-  searchableColumns: ['title', 'description'],
+  searchableColumns: ['title', 'year', 'description', 'rating'],
   defaultLimit: 10,
 };
 
@@ -92,7 +92,7 @@ async findOne(id: number) {
     }
 
     if (series.recommender.id !== loggedInDto.id) {
-      throw new ForbiddenException('You can only update your own series');
+      throw new ForbiddenException('You can only update your serie');
     }
 
     if (loggedInDto.role !== Role.SERIES_RECOMMENDER) {

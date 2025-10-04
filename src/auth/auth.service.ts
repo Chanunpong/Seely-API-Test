@@ -92,7 +92,7 @@ export class AuthService {
       expiresIn: process.env.REFRESH_JWT_EXPIRES_IN,
     });
 
-    console.log('Secret key used to sign token:', process.env.REFRESH_JWT_SECRET)
+    console.log('Secret key to tokem:', process.env.REFRESH_JWT_SECRET)
 
     return {
       accessToken,

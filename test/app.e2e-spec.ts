@@ -4,6 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication, VersioningType } from '@nestjs/common'
 import { AppModule } from '../src/app.module'
 import { DataSource } from 'typeorm'
+import * as cookieParser from 'cookie-parser';
 
 
 
@@ -25,6 +26,8 @@ describe('Seely API (e2e)', () => {
       type: VersioningType.URI,
       defaultVersion: '1'
     });
+
+    app.use(cookieParser());
     
     await app.init();
 
@@ -47,7 +50,7 @@ describe('Seely API (e2e)', () => {
         const response = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           })
@@ -55,7 +58,7 @@ describe('Seely API (e2e)', () => {
 
         expect(response.body).toHaveProperty('accessToken')
         expect(response.body).toHaveProperty('user')
-        expect(response.body.user.username).toBe('recommender1')
+        expect(response.body.user.username).toBe('recommender_0')
         expect(response.body.user.role).toBe('SERIES_RECOMMENDER')
         
         const cookies = response.headers['set-cookie']
@@ -231,7 +234,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -296,7 +299,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -327,7 +330,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -364,7 +367,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -394,7 +397,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -441,7 +444,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -474,7 +477,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -541,7 +544,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -567,7 +570,7 @@ describe('Seely API (e2e)', () => {
         const registerRes = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -599,7 +602,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -641,7 +644,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -692,7 +695,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -732,7 +735,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -772,7 +775,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -818,7 +821,7 @@ describe('Seely API (e2e)', () => {
         const recommender = await request(app.getHttpServer())
           .post('/api/v1/auth/register')
           .send({
-            username: 'recommender1',
+            username: 'recommender_0',
             password: '123456',
             role: 'SERIES_RECOMMENDER'
           });
@@ -861,7 +864,7 @@ describe('Seely API (e2e)', () => {
       const recommender = await request(app.getHttpServer())
         .post('/api/v1/auth/register')
         .send({
-          username: 'recommender1',
+          username: 'recommender_0',
           password: '123456',
           role: 'SERIES_RECOMMENDER'
         });
